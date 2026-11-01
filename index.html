@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CityGuard AI | Smart Cities & Civic Innovation Multi-Agent Platform</title>
+  <meta name="description" content="Autonomous Multi-Agent Control Room & Digital Twin for Indian Cities (CITY-01) and Nagrik Personal Civic Agent (CITY-02). Built for extreme weather preemption, civic automation, and municipal coordination.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/src/styles/index.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2338bdf8'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+</head>
+<body>
+  <div id="app" class="app-container">
+    <!-- Top Global Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="brand-logo">
+          <div class="logo-shield">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              <circle cx="12" cy="11" r="3" fill="#38bdf8"/>
+              <path d="M12 2v6M12 14v8M5 11H2M22 11h-3" stroke="#38bdf8" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h1 class="brand-title">CityGuard<span class="accent-text">AI</span></h1>
+          <span class="badge-track-compact">TRACK 3</span>
+          <span class="badge-status live-pulse"><span class="pulse-dot"></span> LIVE</span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <!-- City & Scenario Selector -->
+        <div class="scenario-selector-bar">
+          <div class="selector-group">
+            <span class="label-icon">📍</span>
+            <span class="font-mono text-cyan" style="font-weight: 800; font-size: 0.82rem; letter-spacing: 0.03em;">NAGPUR SMART CITY (ZERO MILE)</span>
+            <select id="city-select" class="custom-select hidden">
+              <option value="nagpur" selected>Nagpur Smart City (Zero Mile Hub)</option>
+            </select>
+          </div>
+          <div class="selector-divider"></div>
+          <div class="selector-group">
+            <label for="scenario-select"><span class="label-icon">⚡</span> Event:</label>
+            <select id="scenario-select" class="custom-select">
+              <option value="live_telemetry" selected>🌐 Live Real-Time Telemetry (Open-Meteo & Gemini AI)</option>
+              <option value="cloudburst_flood">⛈️ Stress Test: Nagpur Cloudburst (84.6mm/h · Manish Nagar RUB)</option>
+              <option value="severe_heatwave">☀️ Stress Test: Vidarbha Severe Heatwave (46.2°C Core)</option>
+              <option value="civic_grievance">🤖 Stress Test: Nagrik AI Grievance Crisis (Aaple Sarkar)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Live System Telemetry -->
+        <div class="system-stats">
+          <div class="stat-item">
+            <span class="stat-label">SENSORS ONLINE</span>
+            <span class="stat-value text-emerald" id="sensor-count">1,842</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">AGENTS ACTIVE</span>
+            <span class="stat-value text-cyan" id="active-agents-count">24</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">TIME (IST)</span>
+            <span class="stat-value font-mono text-amber" id="live-clock">--:--:--</span>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <button id="reanalyze-gemini-btn" class="pill-btn" style="background: linear-gradient(135deg, #1e3a8a, #0a192f); color: #fff; border: 1px solid #38bdf8; display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer;" title="Trigger Gemini 1.5 Flash to understand live telemetry">
+            <span class="pulse-dot"></span>
+            <span>🧠 Gemini Live AI</span>
+          </button>
+          <button id="user-profile-header-btn" class="user-profile-badge-btn" title="Current Authenticated Role - Click to Switch">
+            <span class="profile-avatar-circle" id="header-user-avatar">🏛️</span>
+            <div style="display: flex; flex-direction: column; text-align: left; line-height: 1.1;">
+              <span class="profile-name-text" id="header-user-name">Dr. Abhijeet Chaudhari, IAS</span>
+              <span class="profile-role-tag" id="header-user-role">NMC COMMISSIONER</span>
+            </div>
+            <span style="font-size: 0.7rem; color: var(--text-muted); margin-left: 2px;">▾</span>
+          </button>
+          <button id="audio-toggle-btn" class="icon-btn" title="Toggle System Voice Audio">
+            <svg class="audio-on-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+            <span class="btn-text">Voice Audio</span>
+          </button>
+          <button id="sim-speed-btn" class="pill-btn" data-speed="1">
+            <span class="speed-indicator">1x SPEED</span>
+          </button>
+          <button id="toggle-trends-header-btn" class="icon-btn" title="Toggle Doppler Telemetry & Trends Drawer (T)">
+            <span>⚡ Trends</span>
+          </button>
+          <button id="open-api-hub-btn" class="icon-btn" title="Open Multi-Agent API Integration Hub & Playground" style="background: #eff6ff; border-color: var(--navy-700);">
+            <span style="font-weight: 700; color: var(--navy-900);">🔌 API Hub</span>
+            <span class="badge-status live-pulse" style="padding: 0.05rem 0.35rem; font-size: 0.6rem;"><span class="pulse-dot"></span> LIVE</span>
+          </button>
+        </div>
+    </header>
+
+    <!-- Global One-Liner Emergency Alert Ribbon -->
+    <div id="one-liner-ribbon" class="one-liner-ribbon flash-alert">
+      <div class="ribbon-inner">
+        <div class="ribbon-badge" id="ribbon-badge">
+          <span class="ribbon-pulse-dot"></span>
+          <span id="ribbon-badge-text">LIVE ALERT</span>
+        </div>
+        <div class="ribbon-ticker-wrap">
+          <div class="ribbon-ticker-text" id="ribbon-text">
+            ⚠️ <strong>CRITICAL FLASH FLOOD:</strong> Manish Nagar & Loha Pul underpasses reaching 1.18m (Crit: 1.20m) · Ambazari Lake spillway armed · 4x 450HP pumps active · 140k citizens alerted in MR/HI/EN
+          </div>
+        </div>
+        <div class="ribbon-actions">
+          <button id="ribbon-action-btn" class="ribbon-btn-action" title="Inspect Action Plan">
+            <span id="ribbon-action-text">⚡ Inspect Plan Alpha &rarr;</span>
+          </button>
+          <button id="ribbon-audio-btn" class="ribbon-btn-icon" title="Listen to Voice Broadcast">
+            🔊
+          </button>
+          <button id="ribbon-dismiss-btn" class="ribbon-btn-icon" title="Dismiss Ribbon">
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-Column Social Media Application Shell (Twitter/X & Instagram Aesthetic) -->
+    <div class="social-app-shell">
+      <!-- Left Sidebar (Twitter/X Navigation) -->
+      <aside class="social-left-nav">
+        <div class="nav-brand-card">
+          <div class="nav-logo-icon">🛡️</div>
+          <div class="nav-brand-text">
+            <span class="nav-brand-title">CityGuard</span>
+            <span class="nav-verified-check">
+              <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <nav class="social-nav-menu">
+          <button class="social-nav-link active" data-tab="login-portal">
+            <span class="s-nav-icon">🔐</span>
+            <span class="s-nav-label">Login & Register</span>
+            <span class="s-nav-dot"></span>
+          </button>
+          <button class="social-nav-link" data-tab="social-feed">
+            <span class="s-nav-icon">🏠</span>
+            <span class="s-nav-label">Home (City Feed)</span>
+          </button>
+          <button class="social-nav-link" data-tab="control-room">
+            <span class="s-nav-icon">🏛️</span>
+            <span class="s-nav-label">CITY-01 Control Room</span>
+            <span class="tab-badge alert-pulse" id="left-alert-badge">3</span>
+          </button>
+          <button class="social-nav-link" data-tab="digital-twin">
+            <span class="s-nav-icon">🗺️</span>
+            <span class="s-nav-label">Digital Twin & What-If</span>
+          </button>
+          <button class="social-nav-link" data-tab="nagrik-ai">
+            <span class="s-nav-icon">🤖</span>
+            <span class="s-nav-label">CITY-02 Nagrik AI</span>
+            <span class="tab-badge highlight-badge">AI</span>
+          </button>
+          <button class="social-nav-link" data-tab="agent-swarm">
+            <span class="s-nav-icon">🧠</span>
+            <span class="s-nav-label">Agent Swarm</span>
+          </button>
+          <button class="social-nav-link" data-tab="api-hub">
+            <span class="s-nav-icon">🔌</span>
+            <span class="s-nav-label">API Integrations</span>
+            <span class="tab-badge highlight-badge">6 APIs</span>
+          </button>
+        </nav>
+
+        <!-- Big Tweet/Post SOS Button -->
+        <button class="social-post-btn" id="left-post-sos-btn">
+          <span>🚨 Post Citizen SOS</span>
+        </button>
+
+        <!-- User Profile Pill at Bottom -->
+        <div class="left-nav-user-card" id="left-nav-user-card">
+          <div class="user-avatar-circle" id="left-user-avatar">🏛️</div>
+          <div class="user-card-meta">
+            <div style="display: flex; align-items: center; gap: 0.3rem;">
+              <strong class="user-card-name" id="left-user-name">Dr. Abhijeet Chaudhari, IAS</strong>
+              <span class="nav-verified-check mini">
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              </span>
+            </div>
+            <span class="user-card-handle" id="left-user-handle">@Commissioner_NMC</span>
+          </div>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">•••</span>
+        </div>
+      </aside>
+
+      <!-- Center Main Timeline Feed -->
+      <main class="social-center-feed" id="main-viewport">
+        <!-- Rendered by JS -->
+      </main>
+
+      <!-- Right Column (Twitter/X Trends & Department Swarm) -->
+      <div class="social-right-col" id="right-sidebar-mount">
+        <!-- Rendered by RightSidebar.js -->
+      </div>
+    </div>
+
+    <!-- Global Floating Commissioner Approval Drawer / Modal -->
+    <div id="commissioner-modal" class="modal-backdrop hidden">
+      <!-- Injected by commissionerGate.js -->
+    </div>
+
+    <!-- Quick Audio Briefing Player Strip -->
+    <div id="audio-briefing-strip" class="audio-strip hidden">
+      <div class="strip-left">
+        <span class="audio-wave-anim">
+          <span></span><span></span><span></span><span></span><span></span>
+        </span>
+        <span class="strip-title" id="audio-strip-title">AI Audio Briefing: Commissioner Situational Digest</span>
+      </div>
+      <div class="strip-controls">
+        <button id="audio-strip-playpause" class="icon-btn-sm">⏸️</button>
+        <button id="audio-strip-close" class="icon-btn-sm">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
